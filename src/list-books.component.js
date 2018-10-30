@@ -2,25 +2,49 @@ import React, {Component} from 'react';
 import * as BooksAPI from './BooksAPI'
 import {USER_SHELVES} from './shelf-name-values';
 import BookShelf from './bookshelf.component';
+import {Link} from 'react-router-dom';
 
 class ListBooks extends Component {
     state = {
+        allBooks: {},
         shelves: {}
     }
 
     componentDidMount() {
         BooksAPI.getAll()
-            .then(allBooks => {
-                const shelveData = {};
+            .then(books => {
+                const allBooks = {}, shelveData = {};
 
+                books.forEach(book => {
+                    allBooks[book.id] = book;
+                });
+                
                 USER_SHELVES.forEach(nv => {
-                    shelveData[nv.value] = allBooks.filter(book => book.shelf === nv.value)
+                    shelveData[nv.value] = books.filter(book => book.shelf === nv.value)
                 });
 
                 this.setState({
+                    allBooks: allBooks,
                     shelves: shelveData
                 });
             });
+    }
+
+    shelfSwitchCallback = (book, toShelf, apiRes) => {
+        const allBooks = this.state.allBooks;
+        const shelveData = {};
+        const fromShelf = book.shelf;
+
+        Object.keys(apiRes).forEach(shelf => {
+            shelveData[shelf] = apiRes[shelf].map(bookId => {
+                return this.state.allBooks[bookId]}
+            );
+        });
+
+        this.setState({
+            allBooks: allBooks,
+            shelves: shelveData
+        });
     }
 
     render() {
@@ -33,13 +57,13 @@ class ListBooks extends Component {
                     <div>
                         {
                             USER_SHELVES.map(nv => (
-                                <BookShelf key={nv.value} shelf={nv} books={this.state.shelves[nv.value]} />
+                                <BookShelf key={nv.value} shelf={nv} books={this.state.shelves[nv.value]} shelfSwitchCallback={this.shelfSwitchCallback} />
                             ))
                         }                
                     </div>
                 </div>
                 <div className="open-search">
-                    <a onClick={() => {}}>Add a book</a>
+                    <Link to="/search">Add a book</Link>
                 </div>
             </div>
         )
