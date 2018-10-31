@@ -2,64 +2,61 @@ import React from 'react';
 import {ALL_SHELVES} from './shelf-name-values';
 import PropTypes from 'prop-types';
 
-const BookShelfSwitcher = ({shelf, shelfSwitchCallback}) => {
+class BookShelfSwitcher extends React.Component {
 
-    const handleChange = (e) => {
-        shelfSwitchCallback(e.target.value);
+    state = {
+        isExpanded: false
     }
 
-    return (
-        <div className="book-shelf-changer">
-            <select value={shelf} onChange={handleChange}>
-                <option value="move" disabled>Move to...</option>
-                {
-                    ALL_SHELVES.map(nv => (
-                        <option key={nv.value} value={nv.value}>{nv.name}</option>
-                    ))
-                }
-            </select>            
-        </div>
-    );
-};
+    handleChange = (e) => {
+        const {shelfSwitchCallback} = this.props;
+        
+        e.target.id && shelfSwitchCallback(e.target.id);
+    }
 
-// const ShelfOption = ({shelfNameValue, isSelected}) => {
-//     return (
-//         <div className={`shelf-option ${isSelected ? 'selected' : ''}`}>
-//             {shelfNameValue.name}
-//         </div>
-//     );
-// }
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
 
-// class BookShelfSwitcher extends React.Component {
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
 
-//     state = {
-//         isExpanded: false
-//     }
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.shelf !== nextProps.shelf || this.state.isExpanded !== nextState.isExpanded;
+    }
 
-//     handleChange = (e) => {
-//         const {shelfSwitchCallback} = this.props;
-//         e.target.id && shelfSwitchCallback(e.target.id);
-//     }
+    handleClickOutside = (event) => {
+        if (this.refs.shelfSwitchWrapper && !this.refs.shelfSwitchWrapper.contains(event.target)) {
+            this.setState({
+                isExpanded: false
+            });
+        }
+    }
+    
+    render() {
+        const {shelf} = this.props;
 
-//     render() {
-//         const {shelf} = this.props;
+        return (
+            <div 
+                ref="shelfSwitchWrapper"
+                className={`book-shelf-changer ${this.state.isExpanded ? 'expanded' : ''}`} 
+                onClick={() => this.setState({isExpanded: !this.state.isExpanded})}>
 
-//         return (
-//             <div className={`book-shelf-changer ${this.state.isExpanded ? 'expanded' : ''}`} onClick={() => this.setState({isExpanded: !this.state.isExpanded})}>
-//                 <ul onClick={this.handleChange}>
-//                     <li>Move to...</li>
-//                     {
-//                         ALL_SHELVES.map(nv => (
-//                             <li key={nv.value} id={nv.value}> 
-//                                 <ShelfOption shelfNameValue={nv} isSelected={shelf === nv.value} />
-//                             </li>
-//                         ))
-//                     }
-//                 </ul>
-//             </div>
-//         );
-//     }
-// }
+                <ul onClick={this.handleChange}>
+                    <li className="not-an-option">Move to...</li>
+                    {
+                        ALL_SHELVES.map(nv => (
+                            <li key={nv.value} id={nv.value} className={shelf === nv.value ? 'selected' : ''}> 
+                                {nv.name}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        );
+    }
+}
 
 BookShelfSwitcher.propTypes = {
     shelf: PropTypes.string,

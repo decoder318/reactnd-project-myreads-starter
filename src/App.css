@@ -169,21 +169,49 @@ body, .app {
   cursor: pointer;
   display: none;
   list-style-type: none;
-  width: 220px;
+  width: 180px;
   position: relative;
   top: 40px;
-  left: -40px
+  left: -40px;
 }
 
 .book-shelf-changer ul li {
-  border: 1px solid #eee;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
   width: auto;
   font-size: 0.75rem;
   padding: 0.25rem 1rem;
 }
 
+.book-shelf-changer ul li.not-an-option {
+  color: #999;
+}
+
+.book-shelf-changer ul li.selected {
+  padding-left: 0;
+}
+
+.book-shelf-changer ul li.selected:before {
+  content:'\2713';
+  /* font-family: [my cool web icon font here]; */
+  display:inline-block;
+  vertical-align: top;
+  line-height: 0.75em;
+  width: 0.75em;
+  height:0.75em;
+  text-align: center;
+  color: rgb(15, 206, 47);
+  margin-left: 0.25rem;
+  margin-right: 0.18rem;
+  position: relative;
+  top: 4px;
+}
+
 .book-shelf-changer.expanded ul{
   display: inline-block;
+  z-index: 999;
 }
 
 /* book cover */

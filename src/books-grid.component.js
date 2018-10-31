@@ -1,5 +1,6 @@
 import React from 'react';
 import Book from './book.component';
+import PropTypes from 'prop-types';
 
 const BooksGrid = ({books, shelfSwitchCallback}) => {
     if (!(books && books.length)) {
@@ -18,5 +19,18 @@ const BooksGrid = ({books, shelfSwitchCallback}) => {
         </ol>
     )
 };
+
+BooksGrid.propTypes = {
+    books: PropTypes.arrayOf(PropTypes.shape({
+        imageLinks: PropTypes.shape({
+            thumbnail: PropTypes.string
+        }),
+        shelf: PropTypes.string,
+        title: PropTypes.string,
+        authors: PropTypes.arrayOf(PropTypes.string)
+    })),
+
+    shelfSwitchCallback: PropTypes.func
+}
 
 export default BooksGrid;

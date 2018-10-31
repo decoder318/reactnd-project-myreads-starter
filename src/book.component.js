@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import BookCover from './book-cover.component';
 import BookShelfSwitcher from './book-shelf-switcher.component';
 import * as BooksAPI from './BooksAPI';
+import PropTypes from 'prop-types';
 
 class Book extends Component {
 
@@ -10,7 +11,7 @@ class Book extends Component {
 
         BooksAPI.update(bookMetadata, toShelf)
             .then((res) => {
-                shelfSwitchCallback && typeof(shelfSwitchCallback) == 'function' && shelfSwitchCallback(bookMetadata, toShelf, res);
+                shelfSwitchCallback && typeof(shelfSwitchCallback) === 'function' && shelfSwitchCallback(bookMetadata, toShelf, res);
             });
     }
 
@@ -39,6 +40,17 @@ class Book extends Component {
             </div>
         );
     }
+}
+
+Book.propTypes = {
+    bookMetadata: PropTypes.shape({
+        imageLinks: PropTypes.shape({
+            thumbnail: PropTypes.string
+        }),
+        shelf: PropTypes.string,
+        title: PropTypes.string,
+        authors: PropTypes.arrayOf(PropTypes.string)
+    })
 }
 
 export default Book;
