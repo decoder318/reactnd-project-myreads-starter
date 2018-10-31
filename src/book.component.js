@@ -15,6 +15,19 @@ class Book extends Component {
             });
     }
 
+    getShelfInfo = () => {
+        const {bookMetadata, shelfSwitchCallback} = this.props;
+
+        if (bookMetadata.shelf !== undefined) {
+            return;
+        }
+
+        BooksAPI.get(bookMetadata.id)
+            .then((res) => {
+                shelfSwitchCallback && typeof(shelfSwitchCallback) === 'function' && shelfSwitchCallback(bookMetadata, res.shelf);
+            });
+    }
+
     shouldComponentUpdate(nextProps) {
         const {bookMetadata} = this.props;
 
@@ -29,7 +42,9 @@ class Book extends Component {
             <div className="book">
                 <div className="book-top">
                     <BookCover coverUrl={imageLinks && imageLinks.thumbnail} />
-                    <BookShelfSwitcher shelf={shelf || 'none'} shelfSwitchCallback={this.onShelfSwitched} />
+                    <BookShelfSwitcher shelf={shelf} 
+                        shelfSwitchCallback={this.onShelfSwitched} 
+                        getShelfCallback={this.getShelfInfo} />
                 </div>
                 <div className="book-title">{title}</div>
                 <div className="book-authors">

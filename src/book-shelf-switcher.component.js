@@ -27,27 +27,45 @@ class BookShelfSwitcher extends React.Component {
     }
 
     handleClickOutside = (event) => {
-        if (this.refs.shelfSwitchWrapper && !this.refs.shelfSwitchWrapper.contains(event.target)) {
+        if (this.refs.shelfSwitchWrapper && !this.refs.shelfSwitchWrapper.contains(event.target) && this.state.isExpanded) {
             this.setState({
                 isExpanded: false
             });
         }
     }
     
+    handleClick = () => {
+        const {shelf, getShelfCallback} = this.props;
+
+        this.setState(prevState => ({
+            isExpanded: !prevState.isExpanded
+        }));
+
+        if (!shelf) {
+            getShelfCallback && typeof(getShelfCallback) === 'function' && setTimeout(getShelfCallback, 4);
+            return;
+        }
+    }    
+
+    componentDidUpdate() {
+        console.log('component did update');
+        console.log(this.state);
+    }
+
     render() {
         const {shelf} = this.props;
 
         return (
             <div 
                 ref="shelfSwitchWrapper"
-                className={`book-shelf-changer ${this.state.isExpanded ? 'expanded' : ''}`} 
-                onClick={() => this.setState({isExpanded: !this.state.isExpanded})}>
+                className={`book-shelf-changer ${this.state.isExpanded ? 'expanded' : ''}`}
+                onClick={this.handleClick}>
 
-                <ul onClick={this.handleChange}>
+                <ul onClick={this.handleChange} className={!shelf ? 'waiting' : ''}>
                     <li className="not-an-option">Move to...</li>
                     {
                         ALL_SHELVES.map(nv => (
-                            <li key={nv.value} id={nv.value} className={shelf === nv.value ? 'selected' : ''}> 
+                            <li key={nv.value} id={nv.value} className={shelf === nv.value ? 'selected' : ''}>
                                 {nv.name}
                             </li>
                         ))
@@ -55,7 +73,7 @@ class BookShelfSwitcher extends React.Component {
                 </ul>
             </div>
         );
-    }
+    }    
 }
 
 BookShelfSwitcher.propTypes = {
