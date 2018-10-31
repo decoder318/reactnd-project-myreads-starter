@@ -14,7 +14,7 @@ class SearchBooks extends Component {
         };
 
         // I am forced to bind the context here, as the callback class member, eventhough defined with the lambda syntax.. 
-        // does NOT get the this object when invoked from the child component
+        // does NOT get the 'this' object when invoked from the child component
         this.searchForBooks = this.searchForBooks.bind(this);
     }
 
@@ -31,13 +31,25 @@ class SearchBooks extends Component {
             })
     };
 
+    shelfSwitchCallback = (bookMetadata, toShelf) => {
+        const searchResults = [...this.state.searchResults];
+        const index = searchResults.findIndex(book => book.id === bookMetadata.id)
+
+        searchResults.splice(index, 1, {
+            ...searchResults[index],
+            shelf: toShelf
+        });
+
+        this.setState({searchResults: searchResults});
+    };
+
     render() {
         return (
             <div className="search-books">
                 <SearchBooksBar onQueryChange={this.searchForBooks} />
 
                 <div className="search-books-results">
-                    <BooksGrid books={this.state.searchResults} />
+                    <BooksGrid books={this.state.searchResults} shelfSwitchCallback={this.shelfSwitchCallback} />
                 </div>
             </div>
         );

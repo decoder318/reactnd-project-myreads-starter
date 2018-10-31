@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const BookCover = ({coverUrl}) => {
     return (
@@ -13,5 +14,9 @@ const BookCover = ({coverUrl}) => {
         </div>
     );
 }
+
+BookCover.propTypes = {
+    coverUrl: PropTypes.string
+};
 
 export default BookCover;

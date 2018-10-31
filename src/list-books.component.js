@@ -20,7 +20,9 @@ class ListBooks extends Component {
                 });
                 
                 USER_SHELVES.forEach(nv => {
-                    shelveData[nv.value] = books.filter(book => book.shelf === nv.value)
+                    shelveData[nv.value] = books
+                                                .filter(book => book.shelf === nv.value)
+                                                .map(book => book.id);
                 });
 
                 this.setState({
@@ -31,20 +33,19 @@ class ListBooks extends Component {
     }
 
     shelfSwitchCallback = (book, toShelf, apiRes) => {
-        const allBooks = this.state.allBooks;
-        const shelveData = {};
-        const fromShelf = book.shelf;
-
-        Object.keys(apiRes).forEach(shelf => {
-            shelveData[shelf] = apiRes[shelf].map(bookId => {
-                return this.state.allBooks[bookId]}
-            );
-        });
-
-        this.setState({
-            allBooks: allBooks,
-            shelves: shelveData
-        });
+        // update the book object to the new shelf, and set state
+        // update shelves from api response
+        this.setState(prevState => ({
+            ...prevState,
+            allBooks : {
+                ...prevState.allBooks,
+                [book.id] : {
+                    ...prevState.allBooks[book.id],
+                    shelf: toShelf
+                }
+            },
+            shelves : apiRes
+        }));
     }
 
     render() {
@@ -57,7 +58,10 @@ class ListBooks extends Component {
                     <div>
                         {
                             USER_SHELVES.map(nv => (
-                                <BookShelf key={nv.value} shelf={nv} books={this.state.shelves[nv.value]} shelfSwitchCallback={this.shelfSwitchCallback} />
+                                <BookShelf key={nv.value} shelf={nv} 
+                                    allBooks={this.state.allBooks} 
+                                    shelfBooks={this.state.shelves[nv.value]} 
+                                    shelfSwitchCallback={this.shelfSwitchCallback} />
                             ))
                         }                
                     </div>
