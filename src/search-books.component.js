@@ -19,11 +19,19 @@ class SearchBooks extends Component {
     }
 
     searchForBooks = (query) => {
-        // I don't like doing this, but this inside the promise resolve callback 'then' is being undefined.. 
+        // I don't like doing "const self = this", but this inside the promise resolve callback 'then' is being undefined.. 
         // I know something is wrong, cuz the method is defined on the class, with the lambda syntax, and the 'this' object should always be the instance..
         const self = this;
 
+        query = query.trim();
+        
         this.setState({query: query});
+
+        if (!query) {
+            console.log('empty query');
+            this.setState({searchResults: []});
+            return;
+        }
 
         BooksAPI.search(query)
             .then(books => {
@@ -49,7 +57,22 @@ class SearchBooks extends Component {
                 <SearchBooksBar onQueryChange={this.searchForBooks} />
 
                 <div className="search-books-results">
-                    <BooksGrid books={this.state.searchResults} shelfSwitchCallback={this.shelfSwitchCallback} />
+                    {
+                        this.state.searchResults && this.state.searchResults.length ?
+                            <BooksGrid books={this.state.searchResults} shelfSwitchCallback={this.shelfSwitchCallback} />
+                            :
+                            <div style={
+                                {
+                                    width: 'calc(100vw - 4rem)',
+                                    height: 'calc(100vh - 8rem)',
+                                    margin: 'auto',
+                                    textAlign: 'center',
+                                    lineHeight: 'calc(100vh - 10rem)',
+                                    fontSize: '2rem',
+                                    color: '#555'
+                                }
+                            }>Nothing found yet.. Try typing in a title or an author..</div>
+                    }
                 </div>
             </div>
         );
