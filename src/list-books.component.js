@@ -10,6 +10,10 @@ class ListBooks extends Component {
         shelves: {}
     }
 
+    cancellable = {
+        setState: this.setState.bind(this)
+    }
+
     componentDidMount() {
         BooksAPI.getAll()
             .then(books => {
@@ -25,7 +29,7 @@ class ListBooks extends Component {
                                                 .map(book => book.id);
                 });
 
-                this.setState({
+                this.cancellable && this.cancellable.setState &&  this.cancellable.setState({
                     allBooks: allBooks,
                     shelves: shelveData
                 });
@@ -46,6 +50,10 @@ class ListBooks extends Component {
             },
             shelves : apiRes
         }));
+    }
+
+    componentWillUnmount() {
+
     }
 
     render() {

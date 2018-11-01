@@ -5,11 +5,7 @@ import _ from 'lodash';
 const SearchBooksBar = ({onQueryChange}) => {
 
     const handleChange = (e)=>{
-
-        // debounce the callBack which inturn invokes the API. We don't want too many api requests while the user is typing into the search bar..
-        const debouncedSearchCallback = _.debounce(onQueryChange, 400);
-
-        debouncedSearchCallback(e.target.value);
+        onQueryChange(e.target.value);
     }
 
     return (

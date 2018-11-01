@@ -122,7 +122,25 @@ body, .app {
 
 .book {
   width: 140px;
+  position: relative;
 }
+
+.book:hover .select-book {
+  display: inline;
+}
+
+.book .select-book {
+  /* display: none; */
+  width: 128px;
+  height: 60px;
+  font-weight: bold;
+  background-color: rgba(21, 216, 63, 0.5);
+  position: absolute;
+  top: 110px;
+  padding: 1rem;
+  text-align: center
+}
+
 .book-title,
 .book-authors {
   font-size: 0.8em;
@@ -250,3 +268,11 @@ body, .app {
   font-size: 0.8em;
 }
 
+.full-page-content {
+  width: calc(100vw - 2rem);
+  height: calc(100vh - 4rem);
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  margin: auto;
+}

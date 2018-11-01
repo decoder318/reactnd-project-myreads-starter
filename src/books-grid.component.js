@@ -12,7 +12,7 @@ const BooksGrid = ({books, shelfSwitchCallback}) => {
             {
                 books.map(book => (
                     <li key={book.id}>
-                        <Book bookMetadata = {book} shelfSwitchCallback={shelfSwitchCallback} />
+                        <Book bookMetadata = {book} shelfSwitchCallback={shelfSwitchCallback} />                        
                     </li>
                 ))
             }            

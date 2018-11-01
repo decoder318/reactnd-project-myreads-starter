@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as BooksAPI from './BooksAPI'
 import BooksGrid from './books-grid.component';
 import SearchBooksBar from './search-books-bar.component';
+import _ from 'lodash';
 
 class SearchBooks extends Component {
 
@@ -15,7 +16,7 @@ class SearchBooks extends Component {
 
         // I am forced to bind the context here, as the callback class member, eventhough defined with the lambda syntax.. 
         // does NOT get the 'this' object when invoked from the child component
-        this.searchForBooks = this.searchForBooks.bind(this);
+        this.searchForBooks = _.debounce(this.searchForBooks.bind(this), 400);
     }
 
     searchForBooks = (query) => {
@@ -63,11 +64,11 @@ class SearchBooks extends Component {
                             :
                             <div style={
                                 {
-                                    width: 'calc(100vw - 4rem)',
-                                    height: 'calc(100vh - 8rem)',
+                                    width: 'calc(100vw - 15rem)',
+                                    height: 'calc(100vh - 15rem)',
                                     margin: 'auto',
                                     textAlign: 'center',
-                                    lineHeight: 'calc(100vh - 10rem)',
+                                    lineHeight: 'calc(100vh - 15rem)',
                                     fontSize: '2rem',
                                     color: '#555'
                                 }

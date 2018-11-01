@@ -8,7 +8,8 @@ const BookCover = ({coverUrl}) => {
                 { 
                     width: 128, 
                     height: 193, 
-                    backgroundImage: `url("${coverUrl}")`
+                    backgroundImage: `url("${coverUrl}")`,
+                    backgroundSize: 'contain'
                 }
             }>
         </div>

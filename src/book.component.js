@@ -3,6 +3,7 @@ import BookCover from './book-cover.component';
 import BookShelfSwitcher from './book-shelf-switcher.component';
 import * as BooksAPI from './BooksAPI';
 import PropTypes from 'prop-types';
+import coverPlaceHolder from './images/no-cover-placeholder.jpg'
 
 class Book extends Component {
 
@@ -41,7 +42,7 @@ class Book extends Component {
         return (
             <div className="book">
                 <div className="book-top">
-                    <BookCover coverUrl={imageLinks && imageLinks.thumbnail} />
+                    <BookCover coverUrl={(imageLinks && imageLinks.thumbnail) || coverPlaceHolder} />
                     <BookShelfSwitcher shelf={shelf} 
                         shelfSwitchCallback={this.onShelfSwitched} 
                         getShelfCallback={this.getShelfInfo} />
