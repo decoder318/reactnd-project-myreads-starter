@@ -45,11 +45,6 @@ class BookShelfSwitcher extends React.Component {
             getShelfCallback && typeof(getShelfCallback) === 'function' && setTimeout(getShelfCallback, 4);
             return;
         }
-    }    
-
-    componentDidUpdate() {
-        console.log('component did update');
-        console.log(this.state);
     }
 
     render() {
