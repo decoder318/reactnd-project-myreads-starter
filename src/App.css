@@ -36,6 +36,7 @@ body, .app {
   position: absolute;
   top: 0;
   right: 150px;
+  z-index: 9999;
 }
 
 .bulk-move .selected-books-badge {
@@ -90,6 +91,11 @@ body, .app {
 }
 
 /* search page */
+
+.search-books .bulk-move {
+  top: 6px;
+  right: 205px;
+}
 
 .search-books-bar {
   position: fixed;
