@@ -52,9 +52,45 @@ class ListBooks extends Component {
         }));
     }
 
-    componentWillUnmount() {
+    selectBookCallback = (book) => {        
+        this.setState(prevState => ({
+            ...prevState,
+            allBooks : {
+                ...prevState.allBooks,
+                [book.id] : {
+                    ...prevState.allBooks[book.id],
+                    isSelected: !prevState.allBooks[book.id].isSelected
+                }
+            }
+        }));
+    };
 
-    }
+    bulkShelfSwitchCallback = ({fromShelf, toShelf}) => {
+
+        Promise.all(
+            this.state.shelves[fromShelf]
+                .map(bookId => this.state.allBooks[bookId])
+                .filter(book => book.isSelected)
+                .map(book => BooksAPI.update(book, toShelf))
+        ).then((args) => {
+            const shelves = args[args.length - 1];
+
+            const allBooks = {...this.state.allBooks};
+
+            this.state.shelves[fromShelf]
+                .map(bookId => this.state.allBooks[bookId])
+                .filter(book => book.isSelected)
+                .forEach(book => {
+                    allBooks[book.id].shelf = toShelf;
+                    allBooks[book.id].isSelected = false;
+                });
+
+            this.setState({
+                allBooks,
+                shelves
+            });
+        });
+    };
 
     render() {
         return (
@@ -69,7 +105,9 @@ class ListBooks extends Component {
                                 <BookShelf key={nv.value} shelf={nv} 
                                     allBooks={this.state.allBooks} 
                                     shelfBooks={this.state.shelves[nv.value]} 
-                                    shelfSwitchCallback={this.shelfSwitchCallback} />
+                                    shelfSwitchCallback={this.shelfSwitchCallback}
+                                    selectBookCallback={this.selectBookCallback}
+                                    bulkShelfSwitchCallback ={this.bulkShelfSwitchCallback} />
                             ))
                         }                
                     </div>

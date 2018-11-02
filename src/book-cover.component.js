@@ -9,7 +9,10 @@ const BookCover = ({coverUrl}) => {
                     width: 128, 
                     height: 193, 
                     backgroundImage: `url("${coverUrl}")`,
-                    backgroundSize: 'contain'
+                    backgroundSize: 'contain',
+                    backgroundColor: '#000',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
                 }
             }>
         </div>

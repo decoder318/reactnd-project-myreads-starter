@@ -1,8 +1,13 @@
 import React from 'react';
 import Book from './book.component';
+import SelectBook from './select-book.component';
 import PropTypes from 'prop-types';
 
-const BooksGrid = ({books, shelfSwitchCallback}) => {
+const BooksGrid = ({books, shelfSwitchCallback, selectBookCallback}) => {
+    const onBookSelected = (book) => {
+        selectBookCallback && typeof(selectBookCallback) === 'function' && selectBookCallback(book);
+    }
+
     if (!(books && books.length)) {
         return '';
     }
@@ -11,11 +16,12 @@ const BooksGrid = ({books, shelfSwitchCallback}) => {
         <ol className="books-grid">
             {
                 books.map(book => (
-                    <li key={book.id}>
-                        <Book bookMetadata = {book} shelfSwitchCallback={shelfSwitchCallback} />                        
+                    <li key={book.id} className={book.isSelected ? 'book-selected' : ''}>
+                        <Book bookMetadata = {book} shelfSwitchCallback={shelfSwitchCallback} />
+                        <SelectBook isSelected={book.isSelected} selectBookCallback={() => onBookSelected(book)} />
                     </li>
                 ))
-            }            
+            }
         </ol>
     )
 };

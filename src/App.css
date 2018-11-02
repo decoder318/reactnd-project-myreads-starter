@@ -28,11 +28,38 @@ body, .app {
 
 .bookshelf {
   padding: 0 10px 20px;
+  position: relative;
+}
+
+.bulk-move {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 150px;
+}
+
+.bulk-move .selected-books-badge {
+  display: inline-block;
+  background-color: #2099ac;
+  color: #fff;
+  padding: 0.5rem 3rem 0.5rem 1rem;
+  border-radius: 16px;
+}
+
+.bulk-move .book-shelf-changer.expanded ul {
+  top: 28px;
+}
+
+.bulk-move .book-shelf-changer {
+  position: absolute;
+  top: 0px;
+  right: -10px;
 }
 
 @media (min-width: 600px) {
   .bookshelf {
     padding: 0 110px 40px;
+    position: relative;
   }
 }
 
@@ -104,8 +131,6 @@ body, .app {
   margin-bottom: 135px;
 }
 
-/* books grid */
-
 .books-grid {
   list-style-type: none;
   padding: 0;
@@ -115,30 +140,47 @@ body, .app {
   justify-content: center;
   flex-wrap: wrap;
 }
-.books-grid li {
+.books-grid>li {
   padding: 10px 15px;
   text-align: left;
+  position: relative;
+  margin-top: 0.25em;
+  margin-left: 0.25em;
+}
+
+.books-grid li .select-book {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-weight: bold;
+  background-color: rgba(25, 25, 25, 0.75);
+  position: absolute;
+  top: 180px;
+  left: 2px;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+}
+
+.books-grid li:hover .select-book {
+  display: inline-block;
+}
+
+.books-grid li .select-book.selected {
+  /* display: inline-block; */
+  background-color: #60ac5d;
+  color: #fff;
+}
+
+.books-grid li.book-selected {
+  background: rgba(50, 180, 50, 0.2);
+  border-radius: 4px;
 }
 
 .book {
   width: 140px;
-  position: relative;
-}
-
-.book:hover .select-book {
-  display: inline;
-}
-
-.book .select-book {
-  /* display: none; */
-  width: 128px;
-  height: 60px;
-  font-weight: bold;
-  background-color: rgba(21, 216, 63, 0.5);
-  position: absolute;
-  top: 110px;
-  padding: 1rem;
-  text-align: center
 }
 
 .book-title,
